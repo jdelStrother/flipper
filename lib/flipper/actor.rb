@@ -2,10 +2,11 @@
 # to Flipper::Feature#enabled?.
 module Flipper
   class Actor
-    attr_reader :flipper_id
+    attr_reader :flipper_id, :flipper_attributes
 
-    def initialize(flipper_id)
+    def initialize(flipper_id, flipper_attributes = {})
       @flipper_id = flipper_id
+      @flipper_attributes = flipper_attributes
     end
 
     def eql?(other)

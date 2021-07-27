@@ -6,6 +6,16 @@ RSpec.describe Flipper::Actor do
     expect(actor.flipper_id).to eq("User;235")
   end
 
+  it "initializes with flipper_id and attributes" do
+    attrs = {
+      "plan" => "basic",
+      "created_at" => Time.utc(2021, 7, 27).to_i,
+    }
+    actor = described_class.new("User;235", attrs)
+    expect(actor.flipper_id).to eq("User;235")
+    expect(actor.flipper_attributes).to eq(attrs)
+  end
+
   describe '#eql?' do
     it 'returns true if same class and flipper_id' do
       actor1 = described_class.new("User;235")
