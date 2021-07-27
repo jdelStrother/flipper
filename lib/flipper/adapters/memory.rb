@@ -71,6 +71,8 @@ module Flipper
           @source[feature.key][gate.key] = thing.value.to_s
         when :set
           @source[feature.key][gate.key] << thing.value.to_s
+        when :comparison
+          @source[feature.key][gate.key] << thing.value
         else
           raise "#{gate} is not supported by this adapter yet"
         end
@@ -89,6 +91,8 @@ module Flipper
           @source[feature.key][gate.key] = thing.value.to_s
         when :set
           @source[feature.key][gate.key].delete thing.value.to_s
+        when :comparison
+          @source[feature.key][gate.key].delete thing.value
         else
           raise "#{gate} is not supported by this adapter yet"
         end

@@ -78,6 +78,19 @@ RSpec.describe Flipper::GateValues do
     end
   end
 
+  {
+    nil => Set.new,
+    '' => Set.new,
+    Set.new([["plan", "eq", "basic"]]) => Set.new([["plan", "eq", "basic"]]),
+    [["plan", "eq", "basic"]] => Set.new([["plan", "eq", "basic"]]),
+  }.each do |value, expected|
+    context "with #{value.inspect} comparisons" do
+      it "returns #{expected}" do
+        expect(described_class.new(comparisons: value).comparisons).to eq(expected)
+      end
+    end
+  end
+
   it 'raises argument error for percentage of time value that cannot be converted to an integer' do
     expect do
       described_class.new(percentage_of_time: ['asdf'])

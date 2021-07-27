@@ -64,7 +64,7 @@ RSpec.describe Flipper::Feature do
       instance.gates.each do |gate|
         expect(gate).to be_a(Flipper::Gate)
       end
-      expect(instance.gates.size).to be(5)
+      expect(instance.gates.size).to be(6)
     end
   end
 
@@ -779,6 +779,41 @@ RSpec.describe Flipper::Feature do
     end
   end
 
+  describe '#enable_comparison/disable_comparison' do
+    context 'with comparison' do
+      it 'updates the gate values' do
+        comparison = Flipper::Types::Comparison.new(["plan", "eq", "basic"])
+        expect(subject.gate_values.comparisons).to be_empty
+        subject.enable_comparison(comparison)
+        expect(subject.gate_values.comparisons).to eq(Set[["plan", "eq", "basic"]])
+        subject.disable_comparison(comparison)
+        expect(subject.gate_values.comparisons).to be_empty
+      end
+    end
+
+    context 'with array' do
+      it 'updates the gate values' do
+        comparison = ["plan", "eq", "basic"]
+        expect(subject.gate_values.comparisons).to be_empty
+        subject.enable_comparison(comparison)
+        expect(subject.gate_values.comparisons).to eq(Set[["plan", "eq", "basic"]])
+        subject.disable_comparison(comparison)
+        expect(subject.gate_values.comparisons).to be_empty
+      end
+    end
+
+    context 'with 3 arguments' do
+      it 'updates the gate values' do
+        comparison = ["plan", "eq", "basic"]
+        expect(subject.gate_values.comparisons).to be_empty
+        subject.enable_comparison(*comparison)
+        expect(subject.gate_values.comparisons).to eq(Set[["plan", "eq", "basic"]])
+        subject.disable_comparison(*comparison)
+        expect(subject.gate_values.comparisons).to be_empty
+      end
+    end
+  end
+
   describe '#enabled/disabled_gates' do
     before do
       subject.enable_percentage_of_time 5
@@ -801,12 +836,14 @@ RSpec.describe Flipper::Feature do
       expect(subject.disabled_gates.map(&:name).to_set).to eq(Set[
               :actor,
               :boolean,
+              :comparison,
               :group,
             ])
 
       expect(subject.disabled_gate_names.to_set).to eq(Set[
               :actor,
               :boolean,
+              :comparison,
               :group,
             ])
     end

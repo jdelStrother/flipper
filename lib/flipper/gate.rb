@@ -56,6 +56,7 @@ end
 
 require 'flipper/gates/actor'
 require 'flipper/gates/boolean'
+require 'flipper/gates/comparison'
 require 'flipper/gates/group'
 require 'flipper/gates/percentage_of_actors'
 require 'flipper/gates/percentage_of_time'

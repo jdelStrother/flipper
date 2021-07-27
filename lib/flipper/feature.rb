@@ -119,6 +119,15 @@ module Flipper
       end
     end
 
+    # Public: Enables a feature for a comparison.
+    #
+    # args - an object that Flipper::Types::Comparison can wrap.
+    #
+    # Returns result of enable.
+    def enable_comparison(*args)
+      enable Flipper::Types::Comparison.wrap(*args)
+    end
+
     # Public: Enables a feature for an actor.
     #
     # actor - a Flipper::Types::Actor instance or an object that responds
@@ -157,6 +166,15 @@ module Flipper
     # Returns result of enable.
     def enable_percentage_of_actors(percentage)
       enable Types::PercentageOfActors.wrap(percentage)
+    end
+
+    # Public: Disables a feature for a comparison.
+    #
+    # args - an object that Flipper::Types::Comparison can wrap.
+    #
+    # Returns result of disable.
+    def disable_comparison(*args)
+      disable Flipper::Types::Comparison.wrap(*args)
     end
 
     # Public: Disables a feature for an actor.
@@ -341,6 +359,7 @@ module Flipper
     def gates
       @gates ||= [
         Gates::Boolean.new,
+        Gates::Comparison.new,
         Gates::Actor.new,
         Gates::PercentageOfActors.new,
         Gates::PercentageOfTime.new,

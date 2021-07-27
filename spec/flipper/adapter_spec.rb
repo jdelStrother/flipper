@@ -6,6 +6,7 @@ RSpec.describe Flipper::Adapter do
   let(:default_config) do
     {
       boolean: nil,
+      comparisons: Set.new,
       groups: Set.new,
       actors: Set.new,
       percentage_of_actors: nil,

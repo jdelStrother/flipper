@@ -2,6 +2,36 @@ require 'helper'
 require 'flipper/types/comparison'
 
 RSpec.describe Flipper::Types::Comparison do
+  describe ".wrap" do
+    context "with a comparison" do
+      it "returns comparison" do
+        instance = described_class.new(["plan", "eq", "basic"])
+        comparison = described_class.wrap(instance)
+        expect(comparison.left_value).to eq("plan")
+        expect(comparison.operator).to eq("eq")
+        expect(comparison.right_value).to eq("basic")
+      end
+    end
+
+    context "with an array" do
+      it "returns comparison" do
+        comparison = described_class.wrap(["plan", "eq", "basic"])
+        expect(comparison.left_value).to eq("plan")
+        expect(comparison.operator).to eq("eq")
+        expect(comparison.right_value).to eq("basic")
+      end
+    end
+
+    context "with 3 arguments" do
+      it "returns comparison" do
+        comparison = described_class.wrap("plan", "eq", "basic")
+        expect(comparison.left_value).to eq("plan")
+        expect(comparison.operator).to eq("eq")
+        expect(comparison.right_value).to eq("basic")
+      end
+    end
+  end
+
   it "raises error with nil" do
     expect do
       described_class.new(nil)
