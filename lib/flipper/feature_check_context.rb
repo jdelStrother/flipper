@@ -21,6 +21,11 @@ module Flipper
       values.groups
     end
 
+    # Public: Convenience method for comparisons value like Feature has.
+    def comparisons_value
+      values.comparisons
+    end
+
     # Public: Convenience method for actors value value like Feature has.
     def actors_value
       values.actors

@@ -23,13 +23,14 @@ module Flipper
       #
       # Returns true if gate open for thing, false if not.
       def open?(context)
-        value = context.values[key]
+        rows = context.values[key]
         if context.thing.nil?
           false
         else
-          value.any? do |name|
-            comparison = Flipper::Types::Comparison.new(*value)
-            comparison.match?(context.thing, context)
+          attributes = context.thing.flipper_attributes
+          rows.any? do |row|
+            comparison = Flipper::Types::Comparison.new(row)
+            comparison.match?(attributes)
           end
         end
       end

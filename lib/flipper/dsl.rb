@@ -39,9 +39,19 @@ module Flipper
     # name - The String or Symbol name of the feature.
     # args - The args passed through to the feature instance enable call.
     #
-    # Returns the result of the feature instance enable call.
+    # Returns result of Feature#enable.
     def enable(name, *args)
       feature(name).enable(*args)
+    end
+
+    # Public: Enable a feature for a comparison.
+    #
+    # name - The String or Symbol name of the feature.
+    # args - The args passed through to the feature enable_comparison call.
+    #
+    # Returns result of Feature#enable.
+    def enable_comparison(name, *args)
+      feature(name).enable_comparison(*args)
     end
 
     # Public: Enable a feature for an actor.
@@ -96,6 +106,16 @@ module Flipper
     # Returns the result of the feature instance disable call.
     def disable(name, *args)
       feature(name).disable(*args)
+    end
+
+    # Public: Disable a feature for a comparison.
+    #
+    # name - The String or Symbol name of the feature.
+    # args - The args passed through to the feature disable_comparison call.
+    #
+    # Returns result of Feature#enable.
+    def disable_comparison(name, *args)
+      feature(name).disable_comparison(*args)
     end
 
     # Public: Disable a feature for an actor.
@@ -241,6 +261,16 @@ module Flipper
     # Raises ArgumentError if thing does not respond to `flipper_id`.
     def actor(thing)
       Types::Actor.new(thing)
+    end
+
+    # Public: Wraps an object as a flipper comparison.
+    #
+    # args - The args to pass to Flipper::Types::Comparison.wrap.
+    #
+    # Returns an instance of Flipper::Types::Comparison.
+    # Raises ArgumentError if args cannot be wrapped.
+    def comparison(*args)
+      Types::Comparison.wrap(*args)
     end
 
     # Public: Shortcut for getting a percentage of time instance.

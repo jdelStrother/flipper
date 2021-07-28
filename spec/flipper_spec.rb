@@ -66,6 +66,8 @@ RSpec.describe Flipper do
   describe "delegation to instance" do
     let(:group) { Flipper::Types::Group.new(:admins) }
     let(:actor) { Flipper::Actor.new("1") }
+    let(:basic_actor) { Flipper::Actor.new("2", {"plan" => "basic"}) }
+    let(:comparison) { Flipper::Types::Comparison.new(["plan", "eq", "basic"]) }
 
     before do
       described_class.configure do |config|
@@ -109,6 +111,20 @@ RSpec.describe Flipper do
 
     it 'delegates actor to instance' do
       expect(described_class.actor(actor)).to eq(described_class.instance.actor(actor))
+    end
+
+    it 'delegates enable_comparison to instance' do
+      described_class.enable_comparison(:search, comparison)
+      expect(described_class.instance.enabled?(:search, basic_actor)).to be(true)
+    end
+
+    it 'delegates disable_comparison to instance' do
+      described_class.disable_comparison(:search, comparison)
+      expect(described_class.instance.enabled?(:search, basic_actor)).to be(false)
+    end
+
+    it 'delegates comparison to instance' do
+      expect(described_class.comparison(comparison)).to eq(described_class.instance.comparison(comparison))
     end
 
     it 'delegates enable_group to instance' do

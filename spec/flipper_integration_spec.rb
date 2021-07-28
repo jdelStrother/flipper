@@ -9,17 +9,28 @@ RSpec.describe Flipper do
   let(:dev_group)   { flipper.group(:devs) }
 
   let(:admin_thing) do
-    double 'Non Flipper Thing', flipper_id: 1,  admin?: true, dev?: false
+    double 'Non Flipper Thing', flipper_id: 1,  flipper_attributes: {}, admin?: true, dev?: false
   end
   let(:dev_thing) do
-    double 'Non Flipper Thing', flipper_id: 10, admin?: false, dev?: true
+    double 'Non Flipper Thing', flipper_id: 10, flipper_attributes: {}, admin?: false, dev?: true
+  end
+
+  let(:basic_plan_thing) do
+    double 'Non Flipper Thing', flipper_id: 1, flipper_attributes: {
+      "plan" => "basic",
+    }
+  end
+  let(:premium_plan_thing) do
+    double 'Non Flipper Thing', flipper_id: 10, flipper_attributes: {
+      "plan" => "premium",
+    }
   end
 
   let(:admin_truthy_thing) do
-    double 'Non Flipper Thing', flipper_id: 1,  admin?: 'true-ish', dev?: false
+    double 'Non Flipper Thing', flipper_id: 1,  flipper_attributes: {}, admin?: 'true-ish', dev?: false
   end
   let(:admin_falsey_thing) do
-    double 'Non Flipper Thing', flipper_id: 1,  admin?: nil, dev?: false
+    double 'Non Flipper Thing', flipper_id: 1,  flipper_attributes: {}, admin?: nil, dev?: false
   end
 
   let(:pitt)        { Flipper::Actor.new(1) }
@@ -391,6 +402,26 @@ RSpec.describe Flipper do
 
       it 'returns false for falsey block values' do
         expect(feature.enabled?(flipper.actor(admin_falsey_thing))).to eq(false)
+      end
+    end
+
+    context "for actor with enabled comparison" do
+      before do
+        feature.enable_comparison "plan", "eq", "basic"
+      end
+
+      it "returns true" do
+        expect(feature.enabled?(basic_plan_thing)).to be(true)
+      end
+    end
+
+    context "for actor without enabled comparison" do
+      before do
+        feature.enable_comparison "plan", "eq", "basic"
+      end
+
+      it "returns false" do
+        expect(feature.enabled?(premium_plan_thing)).to be(false)
       end
     end
 

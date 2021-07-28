@@ -58,6 +58,7 @@ module Flipper
   def_delegators :instance,
                  :enabled?, :enable, :disable, :bool, :boolean,
                  :enable_actor, :disable_actor, :actor,
+                 :enable_comparison, :disable_comparison, :comparison,
                  :enable_group, :disable_group,
                  :enable_percentage_of_actors, :disable_percentage_of_actors,
                  :actors, :percentage_of_actors,

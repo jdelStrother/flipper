@@ -9,6 +9,13 @@ module Flipper
     end
   end
 
+  # Raised when operator can not be found.
+  class OperatorNotFound < Error
+    def initialize(operator)
+      super "Could not find operator #{operator.inspect}"
+    end
+  end
+
   # Raised when attempting to declare a group name that has already been used.
   class DuplicateGroup < Error; end
 
