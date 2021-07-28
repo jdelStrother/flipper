@@ -35,6 +35,7 @@ RSpec.describe Flipper::Adapters::Rollout do
       feature = source_flipper[:chat]
       expected = {
         boolean: nil,
+        comparisons: Set.new,
         groups: Set.new([:admins]),
         actors: Set.new(["1"]),
         percentage_of_actors: 20.0,
@@ -48,6 +49,7 @@ RSpec.describe Flipper::Adapters::Rollout do
       feature = source_flipper[:chat]
       expected = {
         boolean: true,
+        comparisons: Set.new,
         groups: Set.new,
         actors: Set.new,
         percentage_of_actors: nil,
@@ -63,6 +65,7 @@ RSpec.describe Flipper::Adapters::Rollout do
       feature = source_flipper[:chat]
       expected = {
         boolean: true,
+        comparisons: Set.new,
         groups: Set.new,
         actors: Set.new,
         percentage_of_actors: nil,

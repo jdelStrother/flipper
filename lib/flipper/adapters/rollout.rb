@@ -49,6 +49,7 @@ module Flipper
 
         {
           boolean: boolean,
+          comparisons: Set.new,
           groups: groups,
           actors: actors,
           percentage_of_actors: percentage_of_actors,
