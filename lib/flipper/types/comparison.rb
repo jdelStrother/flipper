@@ -29,7 +29,12 @@ module Flipper
         raise ArgumentError, 'value must have 3 items' unless value.size == 3
 
         @value = value
-        @left, @operator, @right = @value
+        @left = @value[0].to_s
+        @operator = @value[1].to_s
+        @right = @value[2]
+        if @right.is_a?(Symbol)
+          @right = @right.to_s
+        end
       end
 
       def match?(attributes)

@@ -45,7 +45,7 @@ RSpec.describe Flipper::Types::Comparison do
       end.to raise_error(ArgumentError)
     end
 
-    it "raises error when not array doesn't have 3 items" do
+    it "raises error when array doesn't have 3 items" do
       [
         ["1"],
         ["1", "2"],
@@ -64,7 +64,7 @@ RSpec.describe Flipper::Types::Comparison do
       expect(comparison.right).to eq("basic")
     end
 
-    xit "initializes with array of symbols" do
+    it "initializes with array of symbols" do
       comparison = described_class.new([:plan, :eq, :basic])
       expect(comparison.left).to eq("plan")
       expect(comparison.operator).to eq("eq")
