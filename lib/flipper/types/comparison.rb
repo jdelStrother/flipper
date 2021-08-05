@@ -16,6 +16,8 @@ module Flipper
           args[0]
         when Array
           new(args[0])
+        when Hash
+          new(args)
         when Symbol, String
           new(args)
         end
@@ -28,41 +30,76 @@ module Flipper
         raise ArgumentError, 'value must be Array' unless value.is_a?(Array)
         raise ArgumentError, 'value must have 3 items' unless value.size == 3
 
-        @value = value
-        @left = @value[0].to_s
-        @operator = @value[1].to_s
-        @right = @value[2]
-        if @right.is_a?(Symbol)
-          @right = @right.to_s
+        operator = value[1]
+        @left = evaluate("left".freeze, value[0])
+        @operator = evaluate("operater".freeze, value[1])
+        # TODO: Enforce operator being operator but allow String or Symbol version too
+        raise ArgumentError unless @operator.is_a?(Flipper::Types::Operator)
+        @right = evaluate("right".freeze, value[2])
+      end
+
+      def value
+        [@left.value, @operator.value, @right.value]
+      end
+
+      # TODO: Support left or right being a Flipper::Types::Comparison
+      def match?(attributes)
+        left_value = case @left
+        when Flipper::Types::Property
+          attributes[@left.typecast_value]
+        else
+          @left.typecast_value
+        end
+
+        right_value = case @right
+        when Flipper::Types::Property
+          attributes[@right.typecast_value]
+        else
+          @right.typecast_value
+        end
+
+        !! case @operator.typecast_value
+        when "or"
+          @left.match?(attributes) || @right.match?(attributes)
+        when "and"
+          @left.match?(attributes) && @right.match?(attributes)
+        when "eq"
+          left_value == right_value
+        when "neq"
+          left_value && left_value != right_value
+        when "gt"
+          left_value && left_value > right_value
+        when "gte"
+          left_value && left_value >= right_value
+        when "lt"
+          left_value && left_value < right_value
+        when "lte"
+          left_value && left_value <= right_value
+        when "in"
+          right_value.include?(left_value)
+        when "nin"
+          !right_value.include?(left_value)
+        else
+          raise OperatorNotFound.new(@operator)
         end
       end
 
-      def match?(attributes)
-        property_value = attributes[@left]
+      private
 
-        !! case @operator
-        when "eq"
-          property_value == @right
-        when "neq"
-          property_value && property_value != @right
-        when "gt"
-          property_value && property_value > @right
-        when "gte"
-          property_value && property_value >= @right
-        when "lt"
-          property_value && property_value < @right
-        when "lte"
-          property_value && property_value <= @right
-        when "in"
-          @right.include?(property_value)
-        when "nin"
-          !@right.include?(property_value)
-        when "include"
-          property_value && property_value.include?(@right)
-        when "exclude"
-          property_value && !property_value.include?(@right)
+      def evaluate(name, value)
+        case value
+        when Hash
+          Flipper::Type.from_hash(value)
+        when Array
+          Flipper::Types::Comparison.new(value)
+        when Symbol
+          Flipper::Types::String.new(value)
+        when String
+          Flipper::Types::String.new(value)
+        when Integer
+          Flipper::Types::Integer.new(value)
         else
-          raise OperatorNotFound.new(@operator)
+          raise "unsupported type for #{name} #{value.inspect} #{value.class}"
         end
       end
     end

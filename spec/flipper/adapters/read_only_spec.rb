@@ -50,6 +50,7 @@ RSpec.describe Flipper::Adapters::ReadOnly do
     adapter.enable(feature, time_gate, flipper.time(45))
 
     expect(subject.get(feature)).to eq(boolean: 'true',
+                                       comparisons: Set.new,
                                        groups: Set['admins'],
                                        actors: Set['22'],
                                        percentage_of_actors: '25',

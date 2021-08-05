@@ -782,10 +782,18 @@ RSpec.describe Flipper::Feature do
   describe '#enable_comparison/disable_comparison' do
     context 'with comparison' do
       it 'updates the gate values' do
-        comparison = Flipper::Types::Comparison.new(["plan", "eq", "basic"])
+        comparison = Flipper::Types::Comparison.new([
+          {"type" => "property", "value" => "plan"},
+          {"type" => "operator", "value" => "eq"},
+          {"type" => "string", "value" => "basic"},
+        ])
         expect(subject.gate_values.comparisons).to be_empty
         subject.enable_comparison(comparison)
-        expect(subject.gate_values.comparisons).to eq(Set[["plan", "eq", "basic"]])
+        expect(subject.gate_values.comparisons).to eq(Set[[
+          {"type" => "property", "value" => "plan"},
+          {"type" => "operator", "value" => "eq"},
+          {"type" => "string", "value" => "basic"},
+        ]])
         subject.disable_comparison(comparison)
         expect(subject.gate_values.comparisons).to be_empty
       end
@@ -793,10 +801,18 @@ RSpec.describe Flipper::Feature do
 
     context 'with array' do
       it 'updates the gate values' do
-        comparison = ["plan", "eq", "basic"]
+        comparison = [
+          {"type" => "property", "value" => "plan"},
+          {"type" => "operator", "value" => "eq"},
+          {"type" => "string", "value" => "basic"},
+        ]
         expect(subject.gate_values.comparisons).to be_empty
         subject.enable_comparison(comparison)
-        expect(subject.gate_values.comparisons).to eq(Set[["plan", "eq", "basic"]])
+        expect(subject.gate_values.comparisons).to eq(Set[[
+          {"type" => "property", "value" => "plan"},
+          {"type" => "operator", "value" => "eq"},
+          {"type" => "string", "value" => "basic"},
+        ]])
         subject.disable_comparison(comparison)
         expect(subject.gate_values.comparisons).to be_empty
       end
@@ -804,10 +820,18 @@ RSpec.describe Flipper::Feature do
 
     context 'with 3 arguments' do
       it 'updates the gate values' do
-        comparison = ["plan", "eq", "basic"]
+        comparison = [
+          {"type" => "property", "value" => "plan"},
+          {"type" => "operator", "value" => "eq"},
+          {"type" => "string", "value" => "basic"},
+        ]
         expect(subject.gate_values.comparisons).to be_empty
         subject.enable_comparison(*comparison)
-        expect(subject.gate_values.comparisons).to eq(Set[["plan", "eq", "basic"]])
+        expect(subject.gate_values.comparisons).to eq(Set[[
+          {"type" => "property", "value" => "plan"},
+          {"type" => "operator", "value" => "eq"},
+          {"type" => "string", "value" => "basic"},
+        ]])
         subject.disable_comparison(*comparison)
         expect(subject.gate_values.comparisons).to be_empty
       end

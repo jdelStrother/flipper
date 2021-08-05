@@ -22,6 +22,19 @@ RSpec.describe Flipper::Typecast do
   end
 
   {
+    nil => '',
+    '' => '',
+    'asdf' => 'asdf',
+    9 => '9',
+  }.each do |value, expected|
+    context "#to_string for #{value.inspect}" do
+      it "returns #{expected}" do
+        expect(described_class.to_string(value)).to eq(expected)
+      end
+    end
+  end
+
+  {
     nil => 0,
     '' => 0,
     0 => 0,
@@ -84,6 +97,12 @@ RSpec.describe Flipper::Typecast do
         expect(described_class.to_set(value)).to eq(expected)
       end
     end
+  end
+
+  xit 'raises argument error for value that cannot be converted to a string' do
+    expect do
+      described_class.to_string(['asdf'])
+    end.to raise_error(ArgumentError, /cannot be converted to an string/)
   end
 
   it 'raises argument error for integer value that cannot be converted to an integer' do

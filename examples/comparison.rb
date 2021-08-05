@@ -18,7 +18,11 @@ p({
 })
 
 puts "Enabling for basic"
-Flipper.enable_comparison :redesign, "plan", "eq", "basic"
+Flipper.enable_comparison :redesign, [
+  {"property" => "plan"},
+  {"operator" => "eq"},
+  {"string" => "basic"},
+]
 
 p({
   basic_39: Flipper.enabled?(:redesign, basic_39_actor),
@@ -27,7 +31,11 @@ p({
 })
 
 puts "Disabling for basic"
-Flipper.disable_comparison :redesign, "plan", "eq", "basic"
+Flipper.disable_comparison :redesign, [
+  {"property" => "plan"},
+  {"operator" => "eq"},
+  {"string" => "basic"},
+]
 
 p({
   basic_39: Flipper.enabled?(:redesign, basic_39_actor),
@@ -36,7 +44,11 @@ p({
 })
 
 puts "Enabling for >= 40"
-Flipper.enable_comparison :redesign, "age", "gte", 40
+Flipper.enable_comparison :redesign, [
+  {"property" => "age"},
+  {"operator" => "gte"},
+  {"integer" => 40},
+]
 
 p({
   basic_39: Flipper.enabled?(:redesign, basic_39_actor),

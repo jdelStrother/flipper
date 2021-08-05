@@ -158,13 +158,5 @@ require 'flipper/middleware/memoizer'
 require 'flipper/middleware/setup_env'
 require 'flipper/registry'
 require 'flipper/type'
-require 'flipper/types/actor'
-require 'flipper/types/boolean'
-require 'flipper/types/comparison'
-require 'flipper/types/group'
-require 'flipper/types/percentage'
-require 'flipper/types/percentage_of_actors'
-require 'flipper/types/percentage_of_time'
-require 'flipper/typecast'
 
 require "flipper/railtie" if defined?(Rails::Railtie)

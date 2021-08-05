@@ -67,7 +67,13 @@ RSpec.describe Flipper do
     let(:group) { Flipper::Types::Group.new(:admins) }
     let(:actor) { Flipper::Actor.new("1") }
     let(:basic_actor) { Flipper::Actor.new("2", {"plan" => "basic"}) }
-    let(:comparison) { Flipper::Types::Comparison.new(["plan", "eq", "basic"]) }
+    let(:comparison) {
+      Flipper::Types::Comparison.new([
+        {"type" => "property", "value" => "plan"},
+        {"type" => "operator", "value" => "eq"},
+        {"type" => "string", "value" => "basic"},
+      ])
+    }
 
     before do
       described_class.configure do |config|

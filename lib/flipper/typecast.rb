@@ -28,6 +28,18 @@ module Flipper
       end
     end
 
+    # Internal: Convert value to a string.
+    #
+    # Returns a String representation of the value.
+    # Raises ArgumentError if conversion is not possible.
+    def self.to_string(value)
+      if value.respond_to?(:to_s)
+        value.to_s
+      else
+        raise ArgumentError, "#{value.inspect} cannot be converted to a string"
+      end
+    end
+
     # Internal: Convert value to a float.
     #
     # Returns a Float representation of the value.
