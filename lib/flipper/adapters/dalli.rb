@@ -7,16 +7,7 @@ module Flipper
     # adapter calls in Memcached using the Dalli gem.
     class Dalli
       include ::Flipper::Adapter
-
-      Version = 'v1'.freeze
-      Namespace = "flipper/#{Version}".freeze
-      FeaturesKey = "#{Namespace}/features".freeze
-      GetAllKey = "#{Namespace}/get_all".freeze
-
-      # Private
-      def self.key_for(key)
-        "#{Namespace}/feature/#{key}"
-      end
+      include ::Flipper::KeyValueStore
 
       # Internal
       attr_reader :cache
@@ -102,10 +93,6 @@ module Flipper
       end
 
       private
-
-      def key_for(key)
-        self.class.key_for(key)
-      end
 
       def read_feature_keys
         @cache.fetch(FeaturesKey, @ttl) { @adapter.features }

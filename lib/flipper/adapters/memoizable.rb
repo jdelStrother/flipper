@@ -7,9 +7,7 @@ module Flipper
     # to make it possible to memoize adapter calls for the duration of a request.
     class Memoizable
       include ::Flipper::Adapter
-
-      FeaturesKey = :flipper_features
-      GetAllKey = :all_memoized
+      include ::Flipper::KeyValueStore
 
       # Internal
       attr_reader :cache
@@ -19,11 +17,6 @@ module Flipper
 
       # Internal: The adapter this adapter is wrapping.
       attr_reader :adapter
-
-      # Private
-      def self.key_for(key)
-        "feature/#{key}"
-      end
 
       # Public
       def initialize(adapter, cache = nil)
@@ -159,10 +152,6 @@ module Flipper
       end
 
       private
-
-      def key_for(key)
-        self.class.key_for(key)
-      end
 
       def expire_feature(feature)
         cache.delete(key_for(feature.key)) if memoizing?

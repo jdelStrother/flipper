@@ -7,8 +7,7 @@ module Flipper
     # Useful for tests/specs.
     class Memory
       include ::Flipper::Adapter
-
-      FeaturesKey = :features
+      include ::Flipper::KeyValueStore
 
       # Public: The name of the adapter.
       attr_reader :name

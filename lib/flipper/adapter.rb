@@ -67,6 +67,7 @@ module Flipper
 end
 
 require "set"
+require "flipper/key_value_store"
 require "flipper/exporter"
 require "flipper/feature"
 require "flipper/adapters/sync/synchronizer"

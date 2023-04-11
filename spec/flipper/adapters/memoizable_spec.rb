@@ -279,7 +279,7 @@ RSpec.describe Flipper::Adapters::Memoizable do
         flipper[:stats].enable
         flipper[:search].disable
         result = subject.features
-        expect(cache[:flipper_features]).to be(result)
+        expect(cache[features_key]).to be(result)
       end
     end
 
