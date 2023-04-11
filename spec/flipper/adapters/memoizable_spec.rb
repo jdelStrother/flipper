@@ -2,7 +2,7 @@ require 'flipper/adapters/memoizable'
 require 'flipper/adapters/operation_logger'
 
 RSpec.describe Flipper::Adapters::Memoizable do
-  let(:features_key) { described_class::FeaturesKey }
+  let(:features_key) { described_class.features_key }
   let(:adapter) { Flipper::Adapters::Memory.new }
   let(:flipper) { Flipper.new(adapter) }
   let(:cache)   { {} }
@@ -118,7 +118,7 @@ RSpec.describe Flipper::Adapters::Memoizable do
           expect(cache[described_class.key_for(feature.key)]).not_to be(nil)
           expect(cache[described_class.key_for(feature.key)]).to be(results[feature.key])
         end
-        expect(cache[subject.class::FeaturesKey]).to eq(names.map(&:to_s).to_set)
+        expect(cache[subject.class.features_key]).to eq(names.map(&:to_s).to_set)
       end
 
       it 'only calls get_all once for memoized adapter' do

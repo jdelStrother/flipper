@@ -68,7 +68,7 @@ RSpec.describe Flipper::Adapters::Dalli do
       adapter.get_all
       expect(cache.get(described_class.key_for(stats))[:boolean]).to eq('true')
       expect(cache.get(described_class.key_for(search))[:boolean]).to be(nil)
-      expect(cache.get(described_class::GetAllKey)).to be_within(2).of(Time.now.to_i)
+      expect(cache.get(described_class.get_all_key)).to be_within(2).of(Time.now.to_i)
     end
 
     it 'returns same result when already cached' do

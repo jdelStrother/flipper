@@ -34,14 +34,14 @@ module Flipper
       # Public
       def add(feature)
         result = @adapter.add(feature)
-        @cache.delete(FeaturesKey)
+        @cache.delete(features_key)
         result
       end
 
       ## Public
       def remove(feature)
         result = @adapter.remove(feature)
-        @cache.delete(FeaturesKey)
+        @cache.delete(features_key)
 
         if @write_through
           @cache.write(key_for(feature.key), default_config, @write_options)
@@ -71,12 +71,12 @@ module Flipper
       end
 
       def get_all
-        if @cache.write(GetAllKey, Time.now.to_i, @write_options.merge(unless_exist: true))
+        if @cache.write(get_all_key, Time.now.to_i, @write_options.merge(unless_exist: true))
           response = @adapter.get_all
           response.each do |key, value|
             @cache.write(key_for(key), value, @write_options)
           end
-          @cache.write(FeaturesKey, response.keys.to_set, @write_options)
+          @cache.write(features_key, response.keys.to_set, @write_options)
           response
         else
           features = read_feature_keys.map { |key| Flipper::Feature.new(key, self) }
@@ -114,7 +114,7 @@ module Flipper
 
       # Internal: Returns an array of the known feature keys.
       def read_feature_keys
-        @cache.fetch(FeaturesKey, @write_options) { @adapter.features }
+        @cache.fetch(features_key, @write_options) { @adapter.features }
       end
 
       # Internal: Given an array of features, attempts to read through cache in

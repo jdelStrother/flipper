@@ -82,7 +82,7 @@ RSpec.describe Flipper::Adapters::RedisCache do
       adapter.get_all
       expect(Marshal.load(client.get(described_class.key_for(stats.key)))[:boolean]).to eq('true')
       expect(Marshal.load(client.get(described_class.key_for(search.key)))[:boolean]).to be(nil)
-      expect(client.get(described_class::GetAllKey).to_i).to be_within(2).of(Time.now.to_i)
+      expect(client.get(described_class.get_all_key).to_i).to be_within(2).of(Time.now.to_i)
     end
 
     it 'returns same result when already cached' do

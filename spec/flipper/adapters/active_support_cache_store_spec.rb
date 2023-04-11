@@ -130,7 +130,7 @@ RSpec.describe Flipper::Adapters::ActiveSupportCacheStore do
       adapter.get_all
       expect(cache.read(described_class.key_for(stats))[:boolean]).to eq('true')
       expect(cache.read(described_class.key_for(search))[:boolean]).to be(nil)
-      expect(cache.read(described_class::GetAllKey)).to be_within(2).of(Time.now.to_i)
+      expect(cache.read(described_class.get_all_key)).to be_within(2).of(Time.now.to_i)
     end
 
     it 'returns same result when already cached' do
